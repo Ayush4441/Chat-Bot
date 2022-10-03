@@ -1,19 +1,52 @@
-import nltk
+from threading import *
+import os
 from time import sleep
+
+def Load():
+    star = ["*","*","*","*","*","*","*","*","*","*","*"]
+    mess = ("i","n","i","t","i","a","l","i","z","e","d")
+
+    sleep(0.1)
+    os.system('cls')
+    c = 0
+    for c in range(len(mess)):
+        star[c] = mess[c]
+        print("Module ", end = '') 
+        t = 0
+        for t in range(len(star)):
+            print(star[t], end = "")
+            sleep(0.1)
+            t += 1
+
+        sleep(0.2)
+        os.system('cls')
+        c += 1
+
+Load()
+    
+    
+LoadScreen = Thread(Load())
+#LoadScreen.start()
+
+import nltk
 from nltk.stem import WordNetLemmatizer
-lemmatizer = WordNetLemmatizer()
+
 import pickle
 import numpy as np
 
 from keras.models import load_model
-model = load_model('chatbot_model.h5')
+
 import json
 import random
+
+lemmatizer = WordNetLemmatizer()
+model = load_model('chatbot_model.h5')
+
 intents = json.loads(open('intents.json').read())
 words = pickle.load(open('words.pkl','rb'))
 classes = pickle.load(open('classes.pkl','rb'))
 
-delay = 100
+#LoadScreen.join()
 
 def clean_up_sentence(sentence):
     # tokenize the pattern - split words into array
@@ -65,63 +98,47 @@ def chatbot_response(msg):
     res = getResponse(ints, intents)
     return res
 
+#Creating Terminal Application
 
-#Creating GUI with tkinter
-import tkinter
-from tkinter import *
+delay = 100
+UserLog = [""]
+BotLog = [""]
 
-def send():
-    global res
-    msg = EntryBox.get("1.0",'end-1c').strip()
-    EntryBox.delete("0.0",END)
+Commands = ("Esc", "Help")
 
-    if msg != '':
-        ChatLog.config(state=NORMAL)
-        print(END, "You: " + msg + '\n\n')
-        ChatLog.config(foreground="#442265", font=("Verdana", 12 ))
-        ChatLog.yview(END)
-        res = chatbot_response(msg)
-        print("Bot: ", end = "")
-        Relay(res)
-        print('\n\n')
-        ChatLog.config(state=DISABLED)
-        ChatLog.yview(END)
+def Command(text):
+    if text == Commands[1]:
+        Help()
 
-i = 0
-def Reply(reply):
+def Help():
+    print(Commands)
+
+def Intro():
+    print("Bot: Hello a Chat Bot")
+    print("Bot: How may I help you? \n")
     
-        
-        
- 
 
-base = Tk()
-base.title("Hello")
-base.geometry("400x500")
-base.resizable(width=FALSE, height=FALSE)
+def Send(text):
+    UserLog.insert(text)
+    Write()
 
-#Create Chat window
-ChatLog = Text(base, bd=0, bg="white", height="8", width="50", font="Arial",)
+def Prosses():
+    pass
 
-ChatLog.config(state=DISABLED)
+def Replay():
+    pass
 
-#Bind scrollbar to Chat window
-scrollbar = Scrollbar(base, command = ChatLog.yview, cursor="heart")
-ChatLog['yscrollcommand'] = scrollbar.set
+def Read():
+    IOU = input()
+    if IOU != "":
+        Send()
 
-#Create Button to send message
-SendButton = Button(base, font=("Verdana",12,'bold'), text="Send", width="12", height=5,
-                    bd=0, bg="#32de97", activebackground="#3c9d9b",fg='#ffffff',
-                    command= send )
-
-#Create the box to enter message
-EntryBox = Text(base, bd=0, bg="white",width="29", height="5", font="Arial")
-#EntryBox.bind("<Return>", send)
+def Write():
+    system("cls")
+    for i in UserLog:
+        print(i)
 
 
-#Place all components on the screen
-scrollbar.place(x=376,y=6, height=386)
-ChatLog.place(x=6,y=6, height=386, width=370)
-EntryBox.place(x=128, y=401, height=90, width=265)
-SendButton.place(x=6, y=401, height=90)
 
-base.mainloop()
+Intro()
+Read()
