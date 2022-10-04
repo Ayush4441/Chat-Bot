@@ -1,52 +1,25 @@
-from threading import *
-import os
-from time import sleep
-
-def Load():
-    star = ["*","*","*","*","*","*","*","*","*","*","*"]
-    mess = ("i","n","i","t","i","a","l","i","z","e","d")
-
-    sleep(0.1)
-    os.system('cls')
-    c = 0
-    for c in range(len(mess)):
-        star[c] = mess[c]
-        print("Module ", end = '') 
-        t = 0
-        for t in range(len(star)):
-            print(star[t], end = "")
-            sleep(0.1)
-            t += 1
-
-        sleep(0.2)
-        os.system('cls')
-        c += 1
-
-Load()
-    
-    
-LoadScreen = Thread(Load())
-#LoadScreen.start()
+print("Initilizing")
 
 import nltk
+from time import sleep
 from nltk.stem import WordNetLemmatizer
-
+lemmatizer = WordNetLemmatizer()
 import pickle
 import numpy as np
 
+import keras
 from keras.models import load_model
-
+model = load_model('chatbot_model.h5')
 import json
 import random
-
-lemmatizer = WordNetLemmatizer()
-model = load_model('chatbot_model.h5')
-
 intents = json.loads(open('intents.json').read())
 words = pickle.load(open('words.pkl','rb'))
 classes = pickle.load(open('classes.pkl','rb'))
 
-#LoadScreen.join()
+
+print("Initilized!")
+print("")
+print("")
 
 def clean_up_sentence(sentence):
     # tokenize the pattern - split words into array
@@ -100,45 +73,40 @@ def chatbot_response(msg):
 
 #Creating Terminal Application
 
-delay = 100
-UserLog = [""]
-BotLog = [""]
-
+delay = 0.025
+toExit = False
 Commands = ("Esc", "Help")
 
-def Command(text):
-    if text == Commands[1]:
-        Help()
-
-def Help():
-    print(Commands)
-
 def Intro():
-    print("Bot: Hello a Chat Bot")
-    print("Bot: How may I help you? \n")
-    
-
-def Send(text):
-    UserLog.insert(text)
-    Write()
-
-def Prosses():
-    pass
-
-def Replay():
-    pass
+    Write("Bot", "Hello")
+    Write("You", "")
 
 def Read():
-    IOU = input()
-    if IOU != "":
-        Send()
+    HUI = input()
+    print("")
+    Process(HUI)
 
-def Write():
-    system("cls")
-    for i in UserLog:
-        print(i)
+def Process(message):
+    response = chatbot_response(message)
+    print("")
+    Write("Bot", response)
+    Write("You", "")
+
+
+def Write(Who, message):
+    text = (Who + " : " + message)
+    if message == "":
+        for i in text:
+            print(i, end = "")
+            sleep(delay)
+    else:
+        for i in text:
+            print(i, end = "")
+            sleep(delay)
+        print()
 
 
 
 Intro()
-Read()
+while toExit == False:
+    Read()
