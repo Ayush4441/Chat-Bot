@@ -1,2 +1,2 @@
 # Chat-Bot
-This is a Chat Bot Project For Intenship Project.
+This is a Chat Bot Project For Collage Project.
