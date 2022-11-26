@@ -14,6 +14,7 @@ classes = 0
 nlp = 0
 
 #Start up Screen
+#Bacaly a Loading Up Screen
 StartUp = Tk()
 StartUp.geometry("800x400")
 
@@ -23,11 +24,16 @@ StartUp.overrideredirect(True)
 progress = Progressbar(StartUp, orient = HORIZONTAL, length = 100, mode = 'determinate')
 progress.pack(side = BOTTOM, fill = BOTH, pady = 10)
 
+#Just a Place Holder Image (Cause i don't have suitable Image right now)
 SUImage = PhotoImage(file = "jojo-bizarre-adventure.png")
-label = Label(StartUp,image = SUImage)
+#Properbly a Suitable Image
+#SUImage = PhotoImage(file = "PyChatBot.png")
+label = Label(StartUp, image = SUImage)
 label.pack()
 
+#Importing Packages
 def Import():
+    print("Loading Started")
     global model, words, intents, rand, np, nlp, classes, lemmatizer
     #Chat Bot Stuff
     progress["value"] = 0
